@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /links
+
+Sitemap: https://langbara.pl/sitemap.xml

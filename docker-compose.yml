@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: pg_db
+    image: postgres:17
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=test
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db_init:/docker-entrypoint-initdb.d
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - "8000:8000"
+      - "3000:3000"
+
+    environment:
+      - DB_HOST=pg_db
+      - DB_PORT=5432
+      - DB_NAME=test
+      - DB_PASSWD=postgres
+      - DB_USER=postgres
+      - SECRET_KEY=12341234123412341234123412341234
+      - HCAPTCHA_SECRET_KEY=0x0000000000000000000000000000000000000000
+    
+    depends_on:
+      - db
+
+
+volumes:
+  db_data:
+
